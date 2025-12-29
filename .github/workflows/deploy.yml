@@ -19,7 +19,7 @@ jobs:
       - name: Check if secrets are configured
         id: check
         env:
-          YC_SA_KEY_JSON: ${{ secrets.YC_SA_KEY_JSON }}
+          YC_IAM_KEY_JSON: ${{ secrets.YC_IAM_KEY_JSON }}
           YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
           YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
           YC_SERVICE_ACCOUNT_ID: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
@@ -28,8 +28,8 @@ jobs:
         run: |
           missing_secrets=""
           
-          if [ -z "$YC_SA_KEY_JSON" ]; then
-            missing_secrets="$missing_secrets YC_SA_KEY_JSON"
+          if [ -z "$YC_IAM_KEY_JSON" ]; then
+            missing_secrets="$missing_secrets YC_IAM_KEY_JSON"
           fi
           
           if [ -z "$YC_CLOUD_ID" ]; then
@@ -89,15 +89,15 @@ jobs:
         sleep 2
         yc --version
       
-    - name: Configure Yandex Cloud with Service Account Key
+    - name: Configure Yandex Cloud with IAM Key
       env:
-        YC_SA_KEY_JSON: ${{ secrets.YC_SA_KEY_JSON }}
+        YC_IAM_KEY_JSON: ${{ secrets.YC_IAM_KEY_JSON }}
         YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
         YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
         YC_SERVICE_ACCOUNT_ID: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
       run: |
-        echo "$YC_SA_KEY_JSON" > /tmp/sa-key.json
-        yc config set service-account-key /tmp/sa-key.json
+        echo "$YC_IAM_KEY_JSON" > /tmp/iam-key.json
+        yc config set service-account-key /tmp/iam-key.json
         yc config set cloud-id "$YC_CLOUD_ID"
         yc config set folder-id "$YC_FOLDER_ID"
         echo "Testing authentication..."
@@ -130,7 +130,7 @@ jobs:
         YC_REGISTRY_ID: ${{ secrets.YC_REGISTRY_ID }}
         YC_SERVICE_ACCOUNT_ID: ${{ secrets.YC_SERVICE_ACCOUNT_ID }}
       run: |
-        ENV_VARS="TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN,PORT=8080"
+        ENV_VARS="TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN"
         
         if [ -n "${{ secrets.ADMIN_CHAT_ID }}" ]; then
           ENV_VARS="$ENV_VARS,ADMIN_CHAT_ID=${{ secrets.ADMIN_CHAT_ID }}"
