@@ -15,6 +15,5 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 
 COPY --from=builder /app/risk_reporter_bot .
-COPY .env .env
 
 CMD ["./risk_reporter_bot"]

@@ -1,0 +1,12 @@
+.git
+.env
+yc-sa-key.json
+.gitignore
+README.md
+.github
+*.log
+Dockerfile
+docker-compose.yml
+deploy.sh
+Makefile
+temp_deploy_guide/
